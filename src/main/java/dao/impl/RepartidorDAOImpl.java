@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.ConexionBD;
+import dao.RepartidorDAO;
 import modelo.Repartidor;
 
 import java.sql.*;
@@ -10,14 +11,15 @@ import java.util.List;
 /**
  * Gestiona el almacenamiento y la consulta de repartidores en MySQL.
  */
-public class RepartidorDAOImpl {
+public class RepartidorDAOImpl implements RepartidorDAO {
 
     /**
      * Recupera todos los repartidores registrados.
      *
      * @return lista de repartidores ordenada por identificador
      */
-    public List<Repartidor> listarTodos() {
+    @Override
+    public List<Repartidor> readAll() {
         List<Repartidor> repartidores = new ArrayList<>();
         String sql = "SELECT id, nombre FROM repartidor ORDER BY id";
         try (Connection conexion = ConexionBD.getConnection();
@@ -44,7 +46,8 @@ public class RepartidorDAOImpl {
      * @param repartidor repartidor que se desea almacenar
      * @return {@code true} si el registro fue creado correctamente
      */
-    public boolean guardar(Repartidor repartidor) {
+    @Override
+    public boolean create(Repartidor repartidor) {
         if (repartidor == null) {
             return false;
         }
@@ -73,4 +76,48 @@ public class RepartidorDAOImpl {
         }
     }
 
+    @Override
+    public boolean update(Repartidor repartidor) {
+        if (repartidor == null || repartidor.getIdRepartidor() <= 0) {
+            return false;
+        }
+        String sql = "UPDATE repartidor SET nombre = ? WHERE id = ?";
+        try (Connection conexion = ConexionBD.getConnection();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, repartidor.getNombreRepartidor());
+            ps.setInt(2, repartidor.getIdRepartidor());
+            int filasModificadas = ps.executeUpdate();
+            if (filasModificadas > 0) {
+                return true;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Lo sentimos, hubo un error al actualizar el repartidor");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean delete(int idRepartidor) {
+        if (idRepartidor <= 0) {
+            return false;
+        }
+        String sql = "DELETE FROM repartidor WHERE id = ?";
+        try (Connection connection = ConexionBD.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idRepartidor);
+            int filasEliminadas = ps.executeUpdate();
+            if (filasEliminadas > 0) {
+                return true;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Lo sentimos, hubo un error al eliminar el registro.");
+            return false;
+        }
+    }
 }

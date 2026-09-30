@@ -6,8 +6,8 @@ import modelo.Repartidor;
 import java.util.List;
 
 public interface RepartidorDAO {
-    void create();
+    boolean create(Repartidor repartidor);
     List<Repartidor> readAll();
-    void update();
-    void delete();
+    boolean update(Repartidor repartidor);
+    boolean delete(int idRepartidor);
 }

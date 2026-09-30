@@ -368,7 +368,7 @@ public class VentanaPrincipal extends JFrame {
 
         Repartidor repartidor = new Repartidor(nombre, opcionMochila.isSelected(), opcionDisponible.isSelected(), zonaDeCarga);
 
-        if (repartidorDAOImpl.guardar(repartidor)) {
+        if (repartidorDAOImpl.create(repartidor)) {
             repartidores.add(repartidor);
             areaDeTrabajo.append("Repartidor " + nombre + " registrado con ID " + repartidor.getIdRepartidor() + ".\n");
         } else {
@@ -387,7 +387,7 @@ public class VentanaPrincipal extends JFrame {
         if (repartidor.getIdRepartidor() > 0) {
             return true;
         }
-        return repartidorDAOImpl.guardar(repartidor);
+        return repartidorDAOImpl.create(repartidor);
     }
 
 }
