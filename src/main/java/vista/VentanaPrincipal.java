@@ -1,7 +1,7 @@
 package vista;
 
-import dao.EntregaDAO;
-import dao.RepartidorDAO;
+import dao.impl.EntregaDAOImpl;
+import dao.impl.RepartidorDAOImpl;
 import gestor.ControladorDeEnvios;
 import gestor.ZonaDeCarga;
 import modelo.Entrega;
@@ -31,8 +31,8 @@ public class VentanaPrincipal extends JFrame {
     private final ZonaDeCarga zonaDeCarga = new ZonaDeCarga();
     private final List<Repartidor> repartidores = new ArrayList<>();
     private JTextArea areaDeTrabajo;
-    private final RepartidorDAO repartidorDAO = new RepartidorDAO();
-    private final EntregaDAO entregaDAO = new EntregaDAO();
+    private final RepartidorDAOImpl repartidorDAOImpl = new RepartidorDAOImpl();
+    private final EntregaDAOImpl entregaDAOImpl = new EntregaDAOImpl();
 
 
 
@@ -300,7 +300,7 @@ public class VentanaPrincipal extends JFrame {
 
                         Entrega entrega = new Entrega(pedido, pedido.getRepartidor(), LocalDate.now(), LocalTime.now());
 
-                        if (entregaDAO.guardar(entrega)) {
+                        if (entregaDAOImpl.guardar(entrega)) {
                             resultadosPersistencia.add("Entrega " + entrega.getIdEntrega() + " guardada para el pedido "
                                     + pedido.getIdPedido() + ".");
                         } else {
@@ -368,7 +368,7 @@ public class VentanaPrincipal extends JFrame {
 
         Repartidor repartidor = new Repartidor(nombre, opcionMochila.isSelected(), opcionDisponible.isSelected(), zonaDeCarga);
 
-        if (repartidorDAO.guardar(repartidor)) {
+        if (repartidorDAOImpl.guardar(repartidor)) {
             repartidores.add(repartidor);
             areaDeTrabajo.append("Repartidor " + nombre + " registrado con ID " + repartidor.getIdRepartidor() + ".\n");
         } else {
@@ -387,7 +387,7 @@ public class VentanaPrincipal extends JFrame {
         if (repartidor.getIdRepartidor() > 0) {
             return true;
         }
-        return repartidorDAO.guardar(repartidor);
+        return repartidorDAOImpl.guardar(repartidor);
     }
 
 }

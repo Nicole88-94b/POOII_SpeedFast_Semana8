@@ -1,6 +1,6 @@
 package vista;
 
-import dao.PedidoDAO;
+import dao.impl.PedidoDAOImpl;
 import gestor.ControladorDeEnvios;
 import modelo.*;
 
@@ -20,7 +20,7 @@ public class VentanaRegistroPedido extends JFrame {
     private JTextField campoDireccionEntrega;
     private JTextField campoDistanciaKilometros;
     private JComboBox<String> campoTipoPedido;
-    private final PedidoDAO pedidoDAO = new PedidoDAO();
+    private final PedidoDAOImpl pedidoDAOImpl = new PedidoDAOImpl();
 
 
     /**
@@ -219,7 +219,7 @@ public class VentanaRegistroPedido extends JFrame {
                 default:
                     throw new IllegalArgumentException("Seleccione un tipo de pedido válido.");
             }
-            if (!pedidoDAO.guardar(pedido)) {
+            if (!pedidoDAOImpl.guardar(pedido)) {
                 JOptionPane.showMessageDialog(this, "No fue posible guardar el pedido en la base de datos.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;

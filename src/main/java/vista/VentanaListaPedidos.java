@@ -1,6 +1,6 @@
 package vista;
 
-import dao.PedidoDAO;
+import dao.impl.PedidoDAOImpl;
 import modelo.PedidoResumen;
 
 import  javax.swing.*;
@@ -11,7 +11,7 @@ import  java.awt.*;
  * Consulta MySQL y presenta los pedidos persistidos en una tabla actualizable.
  */
 public class VentanaListaPedidos extends JFrame {
-    private final PedidoDAO pedidoDAO = new PedidoDAO();
+    private final PedidoDAOImpl pedidoDAOImpl = new PedidoDAOImpl();
     private DefaultTableModel modeloTabla;
     private JTable tablaPedidos;
 
@@ -69,7 +69,7 @@ public class VentanaListaPedidos extends JFrame {
 
     private void cargarPedidos() {
         modeloTabla.setRowCount(0);
-    for (PedidoResumen pedido : pedidoDAO.listarTodos()){
+    for (PedidoResumen pedido : pedidoDAOImpl.listarTodos()){
         Object[] fila = {
                 pedido.getIdPedido(),
                 pedido.getDireccion(),
