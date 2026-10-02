@@ -69,7 +69,7 @@ public class VentanaListaPedidos extends JFrame {
 
     private void cargarPedidos() {
         modeloTabla.setRowCount(0);
-    for (PedidoResumen pedido : pedidoDAOImpl.listarTodos()){
+    for (PedidoResumen pedido : pedidoDAOImpl.readAll()){
         Object[] fila = {
                 pedido.getIdPedido(),
                 pedido.getDireccion(),

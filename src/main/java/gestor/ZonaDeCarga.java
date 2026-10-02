@@ -3,8 +3,8 @@ package gestor;
 import modelo.Pedido;
 import modelo.Repartidor;
 
-import  java.util.concurrent.BlockingQueue;
-import  java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Mantiene una cola compartida de pedidos listos para repartir.
@@ -13,7 +13,7 @@ import  java.util.concurrent.LinkedBlockingQueue;
 public class ZonaDeCarga {
     private BlockingQueue<Pedido> pedidos;
 
-    public ZonaDeCarga(){
+    public ZonaDeCarga() {
         this.pedidos = new LinkedBlockingQueue<>();
     }
 
@@ -23,7 +23,7 @@ public class ZonaDeCarga {
      * @param pedido pedido que se intenta ingresar a la cola
      * @throws IllegalArgumentException si el pedido no cumple los requisitos de entrega
      */
-    public synchronized void agregarPedido(Pedido pedido){
+    public synchronized void agregarPedido(Pedido pedido) {
         if (!pedido.cumpleRequisitos()) {
             throw new IllegalArgumentException("Lo sentimos, pedido " + pedido.getIdPedido() +
                     " no cumple los requisitos para entrega.");
@@ -39,13 +39,14 @@ public class ZonaDeCarga {
      * @return pedido retirado, o {@code null} si no hay uno asignado a él
      */
     public synchronized Pedido retirarPedido(Repartidor repartidor) {
-        for (Pedido pedido : pedidos){
-            if (pedido.getRepartidor() == repartidor){
+        for (Pedido pedido : pedidos) {
+            Repartidor repartidorAsignado = pedido.getRepartidor();
+            if (repartidorAsignado != null && repartidorAsignado.getIdRepartidor() == repartidor.getIdRepartidor()) {
                 pedidos.remove(pedido);
                 return pedido;
             }
+
         }
         return null;
     }
-
 }

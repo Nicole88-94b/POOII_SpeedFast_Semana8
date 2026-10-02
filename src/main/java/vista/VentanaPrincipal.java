@@ -306,7 +306,11 @@ public class VentanaPrincipal extends JFrame {
                         if (pedido.getEstado() != EstadoPedido.ENTREGADO) {
                             continue;
                         }
-
+                        if (!controlador.actualizarEstadoPedido(pedido, EstadoPedido.ENTREGADO)) {
+                            resultadosPersistencia.add("No fue posible actualizar el estado del pedido "
+                                            + pedido.getIdPedido() + ".");
+                            continue;
+                        }
                         Entrega entrega = new Entrega(pedido, pedido.getRepartidor(), LocalDate.now(), LocalTime.now());
 
                         if (entregaDAOImpl.guardar(entrega)) {

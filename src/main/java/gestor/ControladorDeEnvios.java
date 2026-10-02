@@ -1,5 +1,7 @@
 package gestor;
 
+import dao.PedidoDAO;
+import dao.impl.PedidoDAOImpl;
 import interfaces.Cancelable;
 import interfaces.Despachable;
 import interfaces.Rastreable;
@@ -19,6 +21,7 @@ public class ControladorDeEnvios implements Rastreable {
 
     private List<Pedido> pedidos;
     private List<String> historial;
+    private final PedidoDAO pedidoDAO = new PedidoDAOImpl();
     private final AtomicInteger siguienteId = new AtomicInteger(100);
 
 
@@ -210,11 +213,14 @@ public class ControladorDeEnvios implements Rastreable {
 
         boolean asignado = pedido.asignarRepartidor(repartidor);
 
-        if (asignado) {
-            historial.add(
-                    "Repartidor " + repartidor.getNombreRepartidor() + " asignado al pedido " + idPedido + ".");
+        if (!asignado) {
+            return false;
         }
-        return asignado;
+        boolean persistido = pedidoDAO.asignarRepartidor(idPedido, repartidor.getIdRepartidor());
+        if (persistido) {
+            historial.add("Pedido " + pedido.getIdPedido() + " asignado a " + repartidor.getNombreRepartidor());
+        }
+        return persistido;
     }
 
     /**
@@ -241,15 +247,26 @@ public class ControladorDeEnvios implements Rastreable {
             boolean despachado = reservado && despacharPedido(pedido);
 
             if (despachado) {
+                if (!actualizarEstadoPedido(pedido, EstadoPedido.EN_REPARTO)){
+                    historial.add("No fue posible actualizar el pedido " + pedido.getIdPedido() + " a EN_REPARTO.");
+                    continue;
+                }
+                historial.add("Pedido " + pedido.getIdPedido() + " actualizado a EN_REPARTO.");
                 zonaDeCarga.agregarPedido(pedido);
                 pedidosPreparados.add(pedido);
-
-                historial.add(
-                        "Pedido " + pedido.getIdPedido() + " ingresado a la zona de carga.");
+                historial.add("Pedido " + pedido.getIdPedido() + " ingresado a la zona de carga.");
             }
         }
 
         return pedidosPreparados;
+    }
+
+    public boolean actualizarEstadoPedido(Pedido pedido, EstadoPedido estado) {
+        if (pedido == null || estado == null) {
+            return false;
+        }
+
+        return pedidoDAO.updateEstado(pedido.getIdPedido(), estado);
     }
 
 }

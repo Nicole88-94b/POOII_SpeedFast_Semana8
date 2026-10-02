@@ -219,7 +219,7 @@ public class VentanaRegistroPedido extends JFrame {
                 default:
                     throw new IllegalArgumentException("Seleccione un tipo de pedido válido.");
             }
-            if (!pedidoDAOImpl.guardar(pedido)) {
+            if (!pedidoDAOImpl.create(pedido)) {
                 JOptionPane.showMessageDialog(this, "No fue posible guardar el pedido en la base de datos.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
