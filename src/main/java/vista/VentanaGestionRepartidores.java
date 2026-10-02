@@ -22,7 +22,6 @@ public class VentanaGestionRepartidores extends JFrame {
     private final ZonaDeCarga zonaDeCarga = new ZonaDeCarga();
 
 
-
     /**
      * Crea la ventana y carga los pedidos disponibles en la base de datos.
      */
@@ -92,22 +91,52 @@ public class VentanaGestionRepartidores extends JFrame {
 
         JButton btnModificar = new JButton("Modificar");
         JButton btnActualizar = new JButton("Actualizar");
+        JButton btnEliminar = new JButton("Eliminar");
         JButton btnSalir = new JButton("Salir");
 
         btnModificar.addActionListener(e -> modificarRepartidor());
         btnActualizar.addActionListener(e -> cargarRepartidores());
+        btnEliminar.addActionListener(e -> eliminarRepartidor());
         btnSalir.addActionListener(e -> dispose());
 
         panel.add(btnModificar);
         panel.add(btnActualizar);
+        panel.add(btnEliminar);
         panel.add(btnSalir);
 
         return panel;
     }
 
+    private void eliminarRepartidor() {
+        int fila = tablaRepartidores.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un repartidor para eliminar.", "Seleccione un repartidor", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        //Consigo los valores de la fila seleccionada
+        int idRepartidor = (int) modeloTabla.getValueAt(fila, 0);
+        String nombre = modeloTabla.getValueAt(fila, 1).toString();
+
+        //Mensaje de confirmación
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el repartidor " +
+                nombre + "?", "Eliminar repartidor.", JOptionPane.YES_NO_OPTION);
+        if (opcion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        //Elimino el repartidor
+        if (repartidorDAO.delete(idRepartidor)) {
+            JOptionPane.showMessageDialog(this, "Repartidor " + nombre + " eliminado.");
+            cargarRepartidores();
+        } else {
+            JOptionPane.showMessageDialog(this, "No fue posible eliminar el repartidor. Puede " +
+                    "estar asociado a una entrega", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
     private void modificarRepartidor() {
         int fila = tablaRepartidores.getSelectedRow();
-        if (fila <0) {
+        if (fila < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione un repartidor para modificar.", "Seleccione un repartidor", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -141,7 +170,7 @@ public class VentanaGestionRepartidores extends JFrame {
 
         //Creo y actualizo el repartidor
         Repartidor repartidor = new Repartidor(idRepartidor, nuevoNombre, opcionMochila.isSelected(), opcionDisponible.isSelected());
-        if (repartidorDAO.update(repartidor)){
+        if (repartidorDAO.update(repartidor)) {
             JOptionPane.showMessageDialog(this, "Repartidor modificado correctamente.");
             cargarRepartidores();
         } else {

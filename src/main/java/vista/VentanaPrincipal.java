@@ -43,19 +43,19 @@ public class VentanaPrincipal extends JFrame {
      * toda la ejecución de la aplicación.
      */
     public VentanaPrincipal() {
-        crearRepartidores();
+        cargarRepartidores();
         estructuraBase();
         panelVentana();
         setLocationRelativeTo(null);
     }
 
-    private void crearRepartidores() {
-        repartidores.add(new Repartidor("Valentina Contreras", true, true, zonaDeCarga));
-        repartidores.add(new Repartidor("Camilo Henriquez", true, false, zonaDeCarga));
-        repartidores.add(new Repartidor("Tomas Liencura", false, true, zonaDeCarga));
-        repartidores.add(new Repartidor("Javiera Soto", true, true, zonaDeCarga));
-        repartidores.add(new Repartidor("Diego Morales", false, true, zonaDeCarga));
-        repartidores.add(new Repartidor("Francisca Rojas", true, false, zonaDeCarga));
+    private void cargarRepartidores() {
+        repartidores.clear();
+
+        for (Repartidor repartidor : repartidorDAOImpl.readAll()) {
+            repartidor.setZonaDeCarga(zonaDeCarga);
+            repartidores.add(repartidor);
+        }
     }
 
     private void estructuraBase() {
@@ -203,6 +203,7 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private void mostrarAsignacionRepartidor() {
+       cargarRepartidores();
         List<Pedido> pedidosDisponibles = new ArrayList<>();
 
         for (Pedido pedido : controlador.obtenerPedidos()) {

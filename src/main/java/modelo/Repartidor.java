@@ -84,6 +84,10 @@ public class Repartidor implements Runnable {
         this.disponible = disponible;
     }
 
+    public void setZonaDeCarga(ZonaDeCarga zonaDeCarga) {
+        this.zonaDeCarga = zonaDeCarga;
+    }
+
     @Override
     public String toString() {
         String estadoDisponibilidad = disponible ? "Está disponible el repartidor" : "El repartidor está ocupado";

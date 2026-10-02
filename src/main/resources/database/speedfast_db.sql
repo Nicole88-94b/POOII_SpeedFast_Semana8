@@ -13,7 +13,13 @@ CREATE TABLE IF NOT EXISTS pedido (
     direccion VARCHAR(150) NOT NULL,
     tipo VARCHAR(30) NOT NULL,
     distancia_km INT NOT NULL,
-    estado VARCHAR(20) NOT NULL
+    estado VARCHAR(20) NOT NULL,
+    id_repartidor INT NULL,
+
+    CONSTRAINT fk_pedido_repartidor
+    FOREIGN KEY (id_repartidor)
+    REFERENCES repartidor(id)
+    ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS entrega (
