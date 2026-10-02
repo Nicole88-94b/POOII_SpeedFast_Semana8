@@ -3,7 +3,9 @@ USE speedfast_db;
 
 CREATE TABLE IF NOT EXISTS repartidor (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL 
+    nombre VARCHAR(100) NOT NULL,
+    tiene_mochila_termica BOOLEAN NOT NULL DEFAULT FALSE,
+    disponible BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS pedido (

@@ -34,7 +34,9 @@ public class VentanaPrincipal extends JFrame {
     private final RepartidorDAOImpl repartidorDAOImpl = new RepartidorDAOImpl();
     private final EntregaDAOImpl entregaDAOImpl = new EntregaDAOImpl();
 
-
+    public JTextArea getAreaDeTrabajo() {
+        return areaDeTrabajo;
+    }
 
     /**
      * Crea la ventana principal e inicializa los recursos utilizados durante
@@ -143,11 +145,17 @@ public class VentanaPrincipal extends JFrame {
             }
         });
 
-        JButton btnRegistroRepartidor = new JButton("Registrar Repartidor");
+        JButton btnRegistroRepartidor = new JButton("Gestionar Repartidores");
         btnRegistroRepartidor.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnRegistroRepartidor.setBackground(new Color(37, 91, 82));
         btnRegistroRepartidor.setForeground(Color.WHITE);
-        btnRegistroRepartidor.addActionListener(e -> registrarRepartidor());
+        btnRegistroRepartidor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaGestionRepartidores ventanaGestionRep = new VentanaGestionRepartidores();
+                ventanaGestionRep.setVisible(true);
+            }
+        });
 
         JButton btnAsignarRepartidor = new JButton("Asignar Repartidor");
         btnAsignarRepartidor.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -338,44 +346,6 @@ public class VentanaPrincipal extends JFrame {
         supervisor.start();
     }
 
-    /**
-     * Solicita los datos básicos de un repartidor, lo guarda en MySQL y lo
-     * incorpora a la lista disponible durante la sesión actual.
-     */
-    private void registrarRepartidor() {
-        JTextField campoNombre = new JTextField();
-        JCheckBox opcionMochila = new JCheckBox("Tiene mochila térmica");
-        JCheckBox opcionDisponible = new JCheckBox("Está disponible");
-
-        JPanel panel = new JPanel(new GridLayout(0, 1, 4, 4));
-        panel.add(new JLabel("Nombre del repartidor:"));
-        panel.add(campoNombre);
-        panel.add(opcionMochila);
-        panel.add(opcionDisponible);
-
-        int opcion = JOptionPane.showConfirmDialog(
-                this, panel, "Registrar repartidor", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (opcion != JOptionPane.OK_OPTION) {
-            return;
-        }
-        String nombre = campoNombre.getText().trim();
-
-        if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    this, "Ingrese un nombre válido.", "Dato obligatorio", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Repartidor repartidor = new Repartidor(nombre, opcionMochila.isSelected(), opcionDisponible.isSelected(), zonaDeCarga);
-
-        if (repartidorDAOImpl.create(repartidor)) {
-            repartidores.add(repartidor);
-            areaDeTrabajo.append("Repartidor " + nombre + " registrado con ID " + repartidor.getIdRepartidor() + ".\n");
-        } else {
-            JOptionPane.showMessageDialog(this, "No fue posible guardar el repartidor.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
     /**
      * Guarda los repartidores iniciales la primera vez que son seleccionados.

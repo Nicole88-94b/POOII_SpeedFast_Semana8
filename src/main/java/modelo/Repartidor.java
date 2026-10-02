@@ -32,8 +32,14 @@ public class Repartidor implements Runnable {
         this.zonaDeCarga = zonaDeCarga;
     }
 
-    public Repartidor (int idRepartidor, String nombreRepartidor) {
+    public Repartidor (int idRepartidor, String nombreRepartidor, boolean tieneMochilaTermica, boolean disponible) {
         this.idRepartidor = idRepartidor;
+        setNombreRepartidor(nombreRepartidor);
+        setTieneMochilaTermica(tieneMochilaTermica);
+        setDisponible(disponible);
+    }
+
+    public Repartidor (String nombreRepartidor) {
         setNombreRepartidor(nombreRepartidor);
     }
 

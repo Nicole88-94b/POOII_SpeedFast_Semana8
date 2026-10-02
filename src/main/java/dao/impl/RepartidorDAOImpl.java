@@ -21,14 +21,16 @@ public class RepartidorDAOImpl implements RepartidorDAO {
     @Override
     public List<Repartidor> readAll() {
         List<Repartidor> repartidores = new ArrayList<>();
-        String sql = "SELECT id, nombre FROM repartidor ORDER BY id";
+        String sql = "SELECT id, nombre, tiene_mochila_termica, disponible FROM repartidor ORDER BY id";
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql);
              ResultSet resultado = ps.executeQuery()) {
             while (resultado.next()) {
                 int id = resultado.getInt("id");
                 String nombre = resultado.getString("nombre");
-                Repartidor repartidor = new Repartidor(id, nombre);
+                boolean tieneMochilaTermica = resultado.getBoolean("tiene_mochila_termica");
+                boolean disponible = resultado.getBoolean("disponible");
+                Repartidor repartidor = new Repartidor(id, nombre, tieneMochilaTermica, disponible);
                 repartidores.add(repartidor);
             }
         } catch (SQLException ex) {
@@ -51,10 +53,12 @@ public class RepartidorDAOImpl implements RepartidorDAO {
         if (repartidor == null) {
             return false;
         }
-        String sql = "INSERT INTO repartidor(nombre) VALUES (?)";
+        String sql = "INSERT INTO repartidor(nombre, tiene_mochila_termica, disponible) VALUES (?, ?, ?)";
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, repartidor.getNombreRepartidor());
+            ps.setBoolean(2, repartidor.isTieneMochilaTermica());
+            ps.setBoolean(3, repartidor.isDisponible());
 
             int filasInsertadas = ps.executeUpdate();
             if (filasInsertadas == 0) {
@@ -81,11 +85,13 @@ public class RepartidorDAOImpl implements RepartidorDAO {
         if (repartidor == null || repartidor.getIdRepartidor() <= 0) {
             return false;
         }
-        String sql = "UPDATE repartidor SET nombre = ? WHERE id = ?";
+        String sql = "UPDATE repartidor SET nombre = ?, tiene_mochila_termica = ?, disponible = ? WHERE id = ?";
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, repartidor.getNombreRepartidor());
-            ps.setInt(2, repartidor.getIdRepartidor());
+            ps.setBoolean(2, repartidor.isTieneMochilaTermica());
+            ps.setBoolean(3, repartidor.isDisponible());
+            ps.setInt(4, repartidor.getIdRepartidor());
             int filasModificadas = ps.executeUpdate();
             if (filasModificadas > 0) {
                 return true;
