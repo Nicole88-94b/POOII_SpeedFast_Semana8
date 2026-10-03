@@ -256,7 +256,7 @@ public class VentanaPrincipal extends JFrame {
         Repartidor repartidorSeleccionado = repartidores.get(comboRepartidores.getSelectedIndex());
 
         if (!asegurarRepartidor(repartidorSeleccionado)) {
-            JOptionPane.showMessageDialog(this, "No fue posible create el repartidor en la base de datos.",
+            JOptionPane.showMessageDialog(this, "No fue posible guardar el repartidor en la base de datos.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -328,7 +328,7 @@ public class VentanaPrincipal extends JFrame {
                         resultadosPersistencia.add("Entrega " + entrega.getIdEntrega() + " guardada para el pedido "
                                 + pedido.getIdPedido() + ".");
                     } else {
-                        resultadosPersistencia.add("No fue posible create la entrega del pedido " + pedido.getIdPedido() + ".");
+                        resultadosPersistencia.add("No fue posible guardar la entrega del pedido " + pedido.getIdPedido() + ".");
                     }
                 }
 

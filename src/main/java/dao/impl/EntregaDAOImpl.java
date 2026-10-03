@@ -11,10 +11,15 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
- * Registra las entregas que relacionan pedidos y repartidores persistidos.
+ * Gestiona la persistencia de las entregas que relacionan pedidos y repartidores.
  */
 public class EntregaDAOImpl implements EntregaDAO {
 
+    /**
+     * Recupera todas las entregas registradas en la base de datos.
+     *
+     * @return lista de entregas ordenada por identificador
+     */
     @Override
     public List<EntregaResumen> readAll() {
         List<EntregaResumen> entregas = new java.util.ArrayList<>();
@@ -39,6 +44,13 @@ public class EntregaDAOImpl implements EntregaDAO {
         return entregas;
     }
 
+    /**
+     * Corrige la fecha y la hora de una entrega existente.
+     * Los identificadores relacionados no se modifican.
+     *
+     * @param entrega entrega con la fecha y la hora actualizadas
+     * @return {@code true} si el registro fue modificado
+     */
     @Override
     public boolean update(EntregaResumen entrega) {
         if (entrega == null || entrega.getIdEntrega() <= 0) {
@@ -64,6 +76,12 @@ public class EntregaDAOImpl implements EntregaDAO {
         }
     }
 
+    /**
+     * Elimina una entrega mediante su identificador.
+     *
+     * @param idEntrega identificador de la entrega
+     * @return {@code true} si el registro fue eliminado
+     */
     @Override
     public boolean delete(int idEntrega) {
         if (idEntrega <= 0) {
@@ -129,6 +147,13 @@ public class EntregaDAOImpl implements EntregaDAO {
         }
     }
 
+    /**
+     * Registra una entrega a partir de los identificadores del pedido y del
+     * repartidor, y conserva el identificador generado por MySQL.
+     *
+     * @param entrega resumen de la entrega que se desea guardar
+     * @return {@code true} si el registro fue creado correctamente
+     */
     @Override
     public boolean create(EntregaResumen entrega) {
         if (entrega == null) {

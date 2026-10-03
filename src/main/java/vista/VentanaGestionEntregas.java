@@ -17,6 +17,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presenta las entregas almacenadas y permite registrarlas, consultarlas,
+ * corregir su fecha u hora y eliminarlas. Los identificadores de pedido y
+ * repartidor se mantienen como datos no editables para proteger la relación
+ * histórica entre las entidades.
+ */
 public class VentanaGestionEntregas extends JFrame {
     private final EntregaDAOImpl entregaDAOImpl = new EntregaDAOImpl();
     private DefaultTableModel modeloTabla;
@@ -26,6 +32,9 @@ public class VentanaGestionEntregas extends JFrame {
     private final PedidoDAOImpl pedidoDAOImpl = new PedidoDAOImpl();
     private final RepartidorDAOImpl repartidorDAOImpl = new RepartidorDAOImpl();
 
+    /**
+     * Construye la ventana y carga las entregas registradas en MySQL.
+     */
     public VentanaGestionEntregas() {
         arquitecturaVentana();
     }
@@ -235,6 +244,9 @@ public class VentanaGestionEntregas extends JFrame {
         return panel;
     }
 
+    /**
+     * Actualiza la tabla con la información disponible en la base de datos.
+     */
     public void cargarEntregas() {
         modeloTabla.setRowCount(0);
 

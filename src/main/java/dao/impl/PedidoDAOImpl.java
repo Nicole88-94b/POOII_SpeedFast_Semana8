@@ -49,7 +49,7 @@ public class PedidoDAOImpl implements PedidoDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            System.out.println("Lo sentimos, hubo un error al create el pedido");
+            System.out.println("Lo sentimos, hubo un error al guardar el pedido");
             return false;
         }
     }
@@ -85,6 +85,12 @@ public class PedidoDAOImpl implements PedidoDAO {
 
     }
 
+    /**
+     * Modifica los datos comunes de un pedido ya almacenado.
+     *
+     * @param pedido datos actualizados del pedido
+     * @return {@code true} si el registro fue modificado
+     */
     @Override
     public boolean update(PedidoResumen pedido) {
         if (pedido == null || pedido.getIdPedido() <= 0) {
@@ -112,6 +118,12 @@ public class PedidoDAOImpl implements PedidoDAO {
         }
     }
 
+    /**
+     * Elimina un pedido mediante su identificador.
+     *
+     * @param idPedido identificador del pedido
+     * @return {@code true} si el registro fue eliminado
+     */
     @Override
     public boolean delete(int idPedido) {
         if (idPedido <= 0) {
@@ -134,6 +146,13 @@ public class PedidoDAOImpl implements PedidoDAO {
         }
     }
 
+    /**
+     * Asocia un repartidor a un pedido que todavía no tiene uno asignado.
+     *
+     * @param idPedido identificador del pedido
+     * @param idRepartidor identificador del repartidor
+     * @return {@code true} si la asignación se guardó correctamente
+     */
     @Override
     public boolean asignarRepartidor(int idPedido, int idRepartidor) {
         if (idPedido <= 0 || idRepartidor <= 0) {
@@ -158,6 +177,13 @@ public class PedidoDAOImpl implements PedidoDAO {
         }
     }
 
+    /**
+     * Persiste un cambio de estado realizado durante el flujo de entrega.
+     *
+     * @param idPedido identificador del pedido
+     * @param estado nuevo estado que se desea almacenar
+     * @return {@code true} si el estado fue actualizado
+     */
     @Override
     public boolean updateEstado(int idPedido, EstadoPedido estado) {
         if (idPedido <= 0 || estado == null) {

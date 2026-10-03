@@ -10,7 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 /**
- * Consulta MySQL y presenta los pedidos persistidos en una tabla actualizable.
+ * Administra los repartidores almacenados en MySQL. Permite registrar,
+ * consultar, modificar y eliminar sus datos desde una tabla actualizable.
  */
 public class VentanaGestionRepartidores extends JFrame {
     private final RepartidorDAO repartidorDAO = new RepartidorDAOImpl();
@@ -21,7 +22,7 @@ public class VentanaGestionRepartidores extends JFrame {
 
 
     /**
-     * Crea la ventana y carga los pedidos disponibles en la base de datos.
+     * Construye la ventana y carga los repartidores disponibles.
      */
     public VentanaGestionRepartidores() {
         arquitecturaVentana();
@@ -204,7 +205,7 @@ public class VentanaGestionRepartidores extends JFrame {
             campoRepartidor.setText("");
             cargarRepartidores();
         } else {
-            JOptionPane.showMessageDialog(this, "No fue posible create el repartidor.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No fue posible guardar el repartidor.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -75,11 +75,17 @@ public class RepartidorDAOImpl implements RepartidorDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            System.out.println("Lo sentimos, hubo un error al create el repartidor");
+            System.out.println("Lo sentimos, hubo un error al guardar el repartidor");
             return false;
         }
     }
 
+    /**
+     * Actualiza el nombre, la disponibilidad y el uso de mochila térmica.
+     *
+     * @param repartidor repartidor con los datos modificados
+     * @return {@code true} si el registro fue actualizado
+     */
     @Override
     public boolean update(Repartidor repartidor) {
         if (repartidor == null || repartidor.getIdRepartidor() <= 0) {
@@ -105,6 +111,12 @@ public class RepartidorDAOImpl implements RepartidorDAO {
         }
     }
 
+    /**
+     * Elimina un repartidor mediante su identificador.
+     *
+     * @param idRepartidor identificador del repartidor
+     * @return {@code true} si el registro fue eliminado
+     */
     @Override
     public boolean delete(int idRepartidor) {
         if (idRepartidor <= 0) {
