@@ -10,4 +10,5 @@ public interface EntregaDAO {
     List<EntregaResumen> readAll();
     boolean update(EntregaResumen entrega);
     boolean delete(int idEntrega);
+    boolean create(EntregaResumen entrega);
 }

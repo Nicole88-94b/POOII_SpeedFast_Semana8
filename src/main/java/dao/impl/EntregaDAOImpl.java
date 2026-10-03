@@ -44,14 +44,12 @@ public class EntregaDAOImpl implements EntregaDAO {
         if (entrega == null || entrega.getIdEntrega() <= 0) {
             return false;
         }
-        String sql = "UPDATE entrega SET id_pedido = ?, id_repartidor = ?, fecha = ?, hora = ? WHERE id = ?";
+        String sql = "UPDATE entrega SET fecha = ?, hora = ? WHERE id = ?";
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setInt(1, entrega.getIdPedido());
-            ps.setInt(2, entrega.getIdRepartidor());
-            ps.setDate(3, Date.valueOf(entrega.getFecha()));
-            ps.setTime(4, Time.valueOf(entrega.getHora()));
-            ps.setInt(5, entrega.getIdEntrega());
+            ps.setDate(1, Date.valueOf(entrega.getFecha()));
+            ps.setTime(2, Time.valueOf(entrega.getHora()));
+            ps.setInt(3, entrega.getIdEntrega());
 
             int filasModificadas = ps.executeUpdate();
             if (filasModificadas > 0) {
@@ -108,6 +106,43 @@ public class EntregaDAOImpl implements EntregaDAO {
              PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, entrega.getPedido().getIdPedido());
             ps.setInt(2, entrega.getRepartidor().getIdRepartidor());
+            ps.setDate(3, Date.valueOf(entrega.getFecha()));
+            ps.setTime(4, Time.valueOf(entrega.getHora()));
+
+            int filasInsertadas = ps.executeUpdate();
+            if (filasInsertadas == 0) {
+                return false;
+            }
+            try (ResultSet clavesGeneradas = ps.getGeneratedKeys()) {
+                if (clavesGeneradas.next()) {
+                    int idGenerado = clavesGeneradas.getInt(1);
+                    entrega.setIdEntrega(idGenerado);
+                    return true;
+                }
+            }
+            return false;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Lo sentimos, hubo un error al guardar la entrega.");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean create(EntregaResumen entrega) {
+        if (entrega == null) {
+            return false;
+        }
+        if (entrega.getIdPedido() <= 0 || entrega.getIdRepartidor() <= 0 ||
+                entrega.getFecha() == null || entrega.getHora() == null) {
+            return false;
+        }
+        String sql = "INSERT INTO entrega (id_pedido, id_repartidor, fecha, hora) VALUES (?, ?, ?, ?)";
+        try (Connection conexion = ConexionBD.getConnection();
+             PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, entrega.getIdPedido());
+            ps.setInt(2, entrega.getIdRepartidor());
             ps.setDate(3, Date.valueOf(entrega.getFecha()));
             ps.setTime(4, Time.valueOf(entrega.getHora()));
 

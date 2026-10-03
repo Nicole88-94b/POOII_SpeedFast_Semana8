@@ -144,7 +144,7 @@ public class VentanaGestionRepartidores extends JFrame {
         boolean mochila = "Sí".equals(modeloTabla.getValueAt(fila, 2));
         boolean disponible = "Sí".equals(modeloTabla.getValueAt(fila, 3));
 
-        //Creo nnuevos componentes para modificar los datos
+        //Creo nuevos componentes para modificar los datos
         JTextField campoNombre = new JTextField(nombre);
         JCheckBox opcionMochila = new JCheckBox("Tiene mochila térmica", mochila);
         JCheckBox opcionDisponible = new JCheckBox("Está disponible", disponible);

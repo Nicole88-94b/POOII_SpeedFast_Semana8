@@ -18,6 +18,10 @@ public class EntregaResumen {
         this.hora = hora;
     }
 
+    public void setIdEntrega(int idEntrega) {
+        this.idEntrega = idEntrega;
+    }
+
     public int getIdEntrega() {
         return idEntrega;
     }
