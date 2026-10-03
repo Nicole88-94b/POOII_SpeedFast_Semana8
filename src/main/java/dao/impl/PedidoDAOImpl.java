@@ -1,7 +1,7 @@
 package dao.impl;
 
 import dao.ConexionBD;
-import dao.PedidoDAO;
+import dao.interfaces.PedidoDAO;
 import modelo.EstadoPedido;
 import modelo.Pedido;
 import modelo.PedidoResumen;
@@ -49,7 +49,7 @@ public class PedidoDAOImpl implements PedidoDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            System.out.println("Lo sentimos, hubo un error al guardar el pedido");
+            System.out.println("Lo sentimos, hubo un error al create el pedido");
             return false;
         }
     }

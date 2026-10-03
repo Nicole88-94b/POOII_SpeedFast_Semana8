@@ -1,6 +1,6 @@
 package gestor;
 
-import dao.PedidoDAO;
+import dao.interfaces.PedidoDAO;
 import dao.impl.PedidoDAOImpl;
 import interfaces.Cancelable;
 import interfaces.Despachable;

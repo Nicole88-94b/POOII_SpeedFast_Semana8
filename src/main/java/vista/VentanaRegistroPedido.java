@@ -8,7 +8,7 @@ import  javax.swing.*;
 import  java.awt.*;
 
 /**
- * Formulario utilizado para validar y guardar nuevos pedidos en MySQL.
+ * Formulario utilizado para validar y create nuevos pedidos en MySQL.
  * Los campos específicos de encomienda se habilitan únicamente cuando
  * corresponde a ese tipo de pedido.
  */
@@ -220,7 +220,7 @@ public class VentanaRegistroPedido extends JFrame {
                     throw new IllegalArgumentException("Seleccione un tipo de pedido válido.");
             }
             if (!pedidoDAOImpl.create(pedido)) {
-                JOptionPane.showMessageDialog(this, "No fue posible guardar el pedido en la base de datos.",
+                JOptionPane.showMessageDialog(this, "No fue posible create el pedido en la base de datos.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }

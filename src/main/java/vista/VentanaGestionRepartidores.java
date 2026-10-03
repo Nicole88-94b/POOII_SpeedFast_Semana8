@@ -1,6 +1,6 @@
 package vista;
 
-import dao.RepartidorDAO;
+import dao.interfaces.RepartidorDAO;
 import dao.impl.RepartidorDAOImpl;
 import gestor.ZonaDeCarga;
 import modelo.Repartidor;
@@ -8,8 +8,6 @@ import modelo.Repartidor;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Consulta MySQL y presenta los pedidos persistidos en una tabla actualizable.
@@ -206,7 +204,7 @@ public class VentanaGestionRepartidores extends JFrame {
             campoRepartidor.setText("");
             cargarRepartidores();
         } else {
-            JOptionPane.showMessageDialog(this, "No fue posible guardar el repartidor.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No fue posible create el repartidor.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -9,17 +9,17 @@ import modelo.EstadoPedido;
 import modelo.Pedido;
 import modelo.Repartidor;
 
-import  javax.swing.*;
-import  java.awt.*;
-import  java.awt.event.ActionEvent;
-import  java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import  java.util.ArrayList;
-import  java.util.List;
-import  java.util.concurrent.ExecutorService;
-import  java.util.concurrent.Executors;
-import  java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Ventana principal de SpeedFast.
@@ -27,7 +27,7 @@ import  java.util.concurrent.TimeUnit;
  * operaciones de registro, consulta, asignación, entrega y persistencia.
  */
 public class VentanaPrincipal extends JFrame {
-    ControladorDeEnvios  controlador = new ControladorDeEnvios();
+    ControladorDeEnvios controlador = new ControladorDeEnvios();
     private final ZonaDeCarga zonaDeCarga = new ZonaDeCarga();
     private final List<Repartidor> repartidores = new ArrayList<>();
     private JTextArea areaDeTrabajo;
@@ -61,7 +61,7 @@ public class VentanaPrincipal extends JFrame {
     private void estructuraBase() {
         setTitle("REPARTOS A DOMICILIO SPEEDFAST");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 650);
+        setSize(1200, 500);
         setLocation(500, 300);
         getContentPane().setBackground(new Color(241, 245, 244));
     }
@@ -79,11 +79,10 @@ public class VentanaPrincipal extends JFrame {
         gbc.insets = new Insets(4, 4, 4, 4);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 3;
-        gbc.weightx = 0.35;
-        gbc.weighty = 1;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1;
+        gbc.weighty = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         add(panelLogo(), gbc);
     }
@@ -91,9 +90,9 @@ public class VentanaPrincipal extends JFrame {
     private void distribucionBotones() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(4, 4, 4, 4);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3;
         gbc.weightx = 1;
         gbc.weighty = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -103,10 +102,9 @@ public class VentanaPrincipal extends JFrame {
     private void distribucionArea() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(4, 4, 4, 4);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.gridheight = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 3;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
@@ -118,7 +116,7 @@ public class VentanaPrincipal extends JFrame {
         botones.setBackground(new Color(231, 237, 235));
         botones.setLayout(new GridBagLayout());
         GridBagConstraints sizeMasterbtn = new GridBagConstraints();
-        sizeMasterbtn.insets = new Insets(8,8,8,8);
+        sizeMasterbtn.insets = new Insets(8, 8, 8, 8);
         sizeMasterbtn.fill = GridBagConstraints.HORIZONTAL;
 
         JButton btnRegistroPedido = new JButton("Registrar Pedido");
@@ -134,7 +132,7 @@ public class VentanaPrincipal extends JFrame {
             }
         });
 
-        JButton btnListarPedido = new JButton("Listar Pedidos");
+        JButton btnListarPedido = new JButton("Gestionar Pedidos");
         btnListarPedido.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnListarPedido.setBackground(new Color(37, 91, 82));
         btnListarPedido.setForeground(Color.WHITE);
@@ -142,6 +140,18 @@ public class VentanaPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 VentanaListaPedidos ventanaListaPedidos = new VentanaListaPedidos(controlador);
                 ventanaListaPedidos.setVisible(true);
+            }
+        });
+        JButton btnGestionarEntregas = new JButton("Gestionar Entregas");
+        btnGestionarEntregas.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnGestionarEntregas.setBackground(new Color(37, 91, 82));
+        btnGestionarEntregas.setForeground(Color.WHITE);
+        btnGestionarEntregas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaGestionEntregas ventanaGestionEn = new VentanaGestionEntregas();
+                ventanaGestionEn.setVisible(true);
+
             }
         });
 
@@ -172,12 +182,13 @@ public class VentanaPrincipal extends JFrame {
         btnIniciar.addActionListener(e -> iniciarEntregas());
 
         botones.add(btnRegistroPedido);
-        botones.add(btnListarPedido,sizeMasterbtn);
+        botones.add(btnListarPedido, sizeMasterbtn);
+        botones.add(btnGestionarEntregas, sizeMasterbtn);
         botones.add(btnRegistroRepartidor, sizeMasterbtn);
         botones.add(btnAsignarRepartidor, sizeMasterbtn);
-        botones.add(btnIniciar,sizeMasterbtn);
+        botones.add(btnIniciar, sizeMasterbtn);
 
-        return  botones;
+        return botones;
     }
 
     private JPanel panelLogo() {
@@ -191,7 +202,7 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private JScrollPane nuevaArea() {
-        areaDeTrabajo = new JTextArea(8,35);
+        areaDeTrabajo = new JTextArea(8, 35);
         areaDeTrabajo.setEditable(false);
         areaDeTrabajo.setFont(new Font("Consolas", Font.PLAIN, 13));
         areaDeTrabajo.setForeground(new Color(35, 48, 52));
@@ -203,7 +214,7 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private void mostrarAsignacionRepartidor() {
-       cargarRepartidores();
+        cargarRepartidores();
         List<Pedido> pedidosDisponibles = new ArrayList<>();
 
         for (Pedido pedido : controlador.obtenerPedidos()) {
@@ -245,7 +256,7 @@ public class VentanaPrincipal extends JFrame {
         Repartidor repartidorSeleccionado = repartidores.get(comboRepartidores.getSelectedIndex());
 
         if (!asegurarRepartidor(repartidorSeleccionado)) {
-            JOptionPane.showMessageDialog(this, "No fue posible guardar el repartidor en la base de datos.",
+            JOptionPane.showMessageDialog(this, "No fue posible create el repartidor en la base de datos.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -290,64 +301,64 @@ public class VentanaPrincipal extends JFrame {
         ejecutor.shutdown();
 
         Thread supervisor = new Thread(() -> {
-                try {
-                    boolean finalizado =
-                            ejecutor.awaitTermination(1, TimeUnit.MINUTES);
+            try {
+                boolean finalizado =
+                        ejecutor.awaitTermination(1, TimeUnit.MINUTES);
 
-                    if (!finalizado) {
-                        SwingUtilities.invokeLater(() ->
-                                areaDeTrabajo.append("La simulación no terminó dentro del tiempo esperado.\n"));
-                        return;
+                if (!finalizado) {
+                    SwingUtilities.invokeLater(() ->
+                            areaDeTrabajo.append("La simulación no terminó dentro del tiempo esperado.\n"));
+                    return;
+                }
+
+                List<String> resultadosPersistencia = new ArrayList<>();
+
+                for (Pedido pedido : pedidosPreparados) {
+                    if (pedido.getEstado() != EstadoPedido.ENTREGADO) {
+                        continue;
                     }
+                    if (!controlador.actualizarEstadoPedido(pedido, EstadoPedido.ENTREGADO)) {
+                        resultadosPersistencia.add("No fue posible actualizar el estado del pedido "
+                                + pedido.getIdPedido() + ".");
+                        continue;
+                    }
+                    Entrega entrega = new Entrega(pedido, pedido.getRepartidor(), LocalDate.now(), LocalTime.now());
 
-                    List<String> resultadosPersistencia = new ArrayList<>();
+                    if (entregaDAOImpl.create(entrega)) {
+                        resultadosPersistencia.add("Entrega " + entrega.getIdEntrega() + " guardada para el pedido "
+                                + pedido.getIdPedido() + ".");
+                    } else {
+                        resultadosPersistencia.add("No fue posible create la entrega del pedido " + pedido.getIdPedido() + ".");
+                    }
+                }
+
+                SwingUtilities.invokeLater(() -> {
+                    areaDeTrabajo.append(
+                            "==================== RESULTADO DE ENTREGAS ====================\n"
+                    );
 
                     for (Pedido pedido : pedidosPreparados) {
-                        if (pedido.getEstado() != EstadoPedido.ENTREGADO) {
-                            continue;
-                        }
-                        if (!controlador.actualizarEstadoPedido(pedido, EstadoPedido.ENTREGADO)) {
-                            resultadosPersistencia.add("No fue posible actualizar el estado del pedido "
-                                            + pedido.getIdPedido() + ".");
-                            continue;
-                        }
-                        Entrega entrega = new Entrega(pedido, pedido.getRepartidor(), LocalDate.now(), LocalTime.now());
-
-                        if (entregaDAOImpl.guardar(entrega)) {
-                            resultadosPersistencia.add("Entrega " + entrega.getIdEntrega() + " guardada para el pedido "
-                                    + pedido.getIdPedido() + ".");
-                        } else {
-                            resultadosPersistencia.add("No fue posible guardar la entrega del pedido " + pedido.getIdPedido() + ".");
-                        }
+                        areaDeTrabajo.append(pedido.mostrarResumen()
+                                + "\nRepartidor asignado: "
+                                + pedido.getRepartidor().getNombreRepartidor()
+                                + "\n-----------------------------------------------------\n");
                     }
 
-                    SwingUtilities.invokeLater(() -> {
+                    for (String resultado : resultadosPersistencia) {
+                        areaDeTrabajo.append(resultado + "\n");
+                    }
+                });
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+
+                SwingUtilities.invokeLater(() ->
                         areaDeTrabajo.append(
-                                "==================== RESULTADO DE ENTREGAS ====================\n"
-                        );
-
-                        for (Pedido pedido : pedidosPreparados) {
-                            areaDeTrabajo.append(pedido.mostrarResumen()
-                                            + "\nRepartidor asignado: "
-                                            + pedido.getRepartidor().getNombreRepartidor()
-                                            + "\n-----------------------------------------------------\n");
-                        }
-
-                        for (String resultado : resultadosPersistencia) {
-                            areaDeTrabajo.append(resultado + "\n");
-                        }
-                    });
-
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-
-                    SwingUtilities.invokeLater(() ->
-                            areaDeTrabajo.append(
-                                    "La simulación fue interrumpida.\n"
-                            )
-                    );
-                }
-            });
+                                "La simulación fue interrumpida.\n"
+                        )
+                );
+            }
+        });
         supervisor.start();
     }
 

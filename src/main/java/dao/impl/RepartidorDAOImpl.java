@@ -1,7 +1,7 @@
 package dao.impl;
 
 import dao.ConexionBD;
-import dao.RepartidorDAO;
+import dao.interfaces.RepartidorDAO;
 import modelo.Repartidor;
 
 import java.sql.*;
@@ -75,7 +75,7 @@ public class RepartidorDAOImpl implements RepartidorDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            System.out.println("Lo sentimos, hubo un error al guardar el repartidor");
+            System.out.println("Lo sentimos, hubo un error al create el repartidor");
             return false;
         }
     }
