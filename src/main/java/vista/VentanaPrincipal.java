@@ -140,7 +140,7 @@ public class VentanaPrincipal extends JFrame {
         btnListarPedido.setForeground(Color.WHITE);
         btnListarPedido.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                VentanaListaPedidos ventanaListaPedidos = new VentanaListaPedidos();
+                VentanaListaPedidos ventanaListaPedidos = new VentanaListaPedidos(controlador);
                 ventanaListaPedidos.setVisible(true);
             }
         });

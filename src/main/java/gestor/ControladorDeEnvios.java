@@ -7,6 +7,7 @@ import interfaces.Despachable;
 import interfaces.Rastreable;
 import modelo.EstadoPedido;
 import modelo.Pedido;
+import modelo.PedidoResumen;
 import modelo.Repartidor;
 
 import  java.util.ArrayList;
@@ -269,4 +270,35 @@ public class ControladorDeEnvios implements Rastreable {
         return pedidoDAO.updateEstado(pedido.getIdPedido(), estado);
     }
 
+    public boolean eliminarPedido(int idPedido) {
+        if (idPedido <= 0) {
+            return false;
+        }
+        boolean eliminadoBD = pedidoDAO.delete(idPedido);
+        if (!eliminadoBD) {
+            return false;
+        }
+        pedidos.removeIf(pedido -> pedido.getIdPedido() == idPedido);
+        historial.add("Pedido " + idPedido + " eliminado.");
+        return true;
+    }
+
+    public boolean actualizarPedido(PedidoResumen pedidoActualizado) {
+        if (pedidoActualizado == null || pedidoActualizado.getIdPedido() <= 0 || pedidoActualizado.getDireccion() == null ||
+                pedidoActualizado.getDireccion().trim().isEmpty() || pedidoActualizado.getDistanciaKm() <= 0) {
+            return false;
+        }
+        boolean actualizado = pedidoDAO.update(pedidoActualizado);
+        if (!actualizado) {
+           return false;
+        }
+        Pedido pedidoEnActualizacion = buscarPedidoPorId(pedidoActualizado.getIdPedido());
+        if (pedidoEnActualizacion != null) {
+          pedidoEnActualizacion.setDireccionEntrega(pedidoActualizado.getDireccion());
+          pedidoEnActualizacion.setDistanciaKilometros(pedidoActualizado.getDistanciaKm());
+        }
+        historial.add("Pedido " + pedidoActualizado.getIdPedido() + " actualizado a " +
+                pedidoActualizado.getDireccion() + " con distancia " + pedidoActualizado.getDistanciaKm() + " km.");
+        return true;
+    }
 }

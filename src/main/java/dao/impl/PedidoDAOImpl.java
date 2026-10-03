@@ -86,16 +86,16 @@ public class PedidoDAOImpl implements PedidoDAO {
     }
 
     @Override
-    public boolean update(Pedido pedido) {
+    public boolean update(PedidoResumen pedido) {
         if (pedido == null || pedido.getIdPedido() <= 0) {
             return false;
         }
         String sql = "UPDATE pedido SET direccion = ?, tipo = ?, distancia_km = ?, estado = ? WHERE id = ?";
         try (Connection conexion = ConexionBD.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, pedido.getDireccionEntrega());
-            ps.setString(2, pedido.getTipoPedido());
-            ps.setInt(3, pedido.getDistanciaKilometros());
+            ps.setString(1, pedido.getDireccion());
+            ps.setString(2, pedido.getTipo());
+            ps.setInt(3, pedido.getDistanciaKm());
             ps.setString(4, pedido.getEstado().name());
             ps.setInt(5, pedido.getIdPedido());
 
