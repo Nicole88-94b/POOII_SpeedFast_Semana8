@@ -51,6 +51,7 @@ public class VentanaListaPedidos extends JFrame {
         String[] columnas = {"ID", "Dirección", "Tipo", "Distancia", "Estado"};
         modeloTabla = new DefaultTableModel(columnas, 0);
         tablaPedidos = new JTable(modeloTabla);
+        tablaPedidos.setDefaultEditor(Object.class, null);
 
         add(new JScrollPane(tablaPedidos), BorderLayout.CENTER);
         cargarPedidos();

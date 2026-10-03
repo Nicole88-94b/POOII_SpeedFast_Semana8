@@ -63,6 +63,7 @@ public class VentanaGestionEntregas extends JFrame {
         String[] columnas = {"ID Entrega", "ID Pedido", "ID Repartidor", "Fecha", "Hora"};
         modeloTabla = new DefaultTableModel(columnas, 0);
         tablaEntregas = new JTable(modeloTabla);
+        tablaEntregas.setDefaultEditor(Object.class, null);
 
         add(new JScrollPane(tablaEntregas), BorderLayout.CENTER);
         cargarEntregas();
